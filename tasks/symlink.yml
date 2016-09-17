@@ -1,0 +1,20 @@
+---
+- name: check ability to rollback
+  fail:
+    msg: "There is no previous or current release available"
+  when: not previous_release_exists or not current_release_exists
+
+- name: check
+  debug: msg="{{current_release_base_path}}"
+
+- name: check previous
+  debug: msg="{{previous_release_base_path}}"
+
+- name: Create symlink current
+  file:
+    state=link force=yes
+    src={{deploy.project.root}}/releases/{{previous_release_base_path}}
+    path={{deploy.project.root}}/current
+
+- name: remove symlink previous
+  file: state=absent force=yes path={{deploy.project.root}}/previous

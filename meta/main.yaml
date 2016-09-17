@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Jakub Kanclerz
+  description: An Ansible for rollback deployed project.
+  company: Jakub Kanclerz.
+  license: Apache
+  min_ansible_version: 1.8
+  platforms:
+  - name: Fedora
+    versions:
+    - all
+  categories:
+  - deployment
+dependencies: []

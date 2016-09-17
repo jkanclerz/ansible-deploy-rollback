@@ -1,0 +1,3 @@
+---
+- include: register_variables.yml
+- include: symlink.yml

@@ -1,0 +1,65 @@
+---
+- name: Check if current release exists
+  shell: readlink "{{deploy.project.root}}/current"
+  register: checking_result
+  ignore_errors: yes
+
+- name: Register fact - Current relese exists
+  set_fact:
+      current_release_exists: true
+  when: checking_result.failed is not defined
+
+- name: Register fact - Current relese exists
+  set_fact:
+      current_release_exists: true
+  when: checking_result.failed is  defined
+
+## PREVIOUS RELEASES
+
+- name: Check if previous release exists
+  shell: readlink "{{deploy.project.root}}/previous"
+  register: checking_previous_result
+  ignore_errors: yes
+
+- name: Register fact - Current relese exists
+  set_fact:
+      previous_release_exists: true
+  when: checking_previous_result.failed is not defined
+
+- name: Register fact - Current relese exists
+  set_fact:
+      previous_release_exists: false
+  when: checking_previous_result.failed is defined
+## Register pathes
+
+- name: Register path of current release
+  set_fact:
+    current_release_path: "{{ checking_result.stdout }}"
+  when: current_release_exists
+
+- name: Register path of previous release
+  set_fact:
+    previous_release_path: "{{ checking_previous_result.stdout }}"
+  when: previous_release_exists
+
+
+- name: Register last basename
+  shell: echo $(basename {{ current_release_path }})
+  register: last_release_out
+  when: current_release_exists
+
+- name: Register previous basename
+  shell: echo $(basename {{ previous_release_path }})
+  register: previous_release_out
+  when: previous_release_exists
+
+
+- name: Register path of current release
+  set_fact:
+    current_release_base_path: "{{ last_release_out.stdout }}"
+  when: current_release_exists
+
+- name: Register path of previous release
+  set_fact:
+    previous_release_base_path: "{{ previous_release_out.stdout }}"
+  when: previous_release_exists
