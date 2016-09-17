@@ -4,12 +4,6 @@
     msg: "There is no previous or current release available"
   when: not previous_release_exists or not current_release_exists
 
-- name: check
-  debug: msg="{{current_release_base_path}}"
-
-- name: check previous
-  debug: msg="{{previous_release_base_path}}"
-
 - name: Create symlink current
   file:
     state=link force=yes
